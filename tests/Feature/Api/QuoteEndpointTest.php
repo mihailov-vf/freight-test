@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class QuoteEndpointTest extends TestCase
 {
-    const URI = '/api/quote';
+    public const URI = '/api/quote';
 
     private function validVolumes()
     {

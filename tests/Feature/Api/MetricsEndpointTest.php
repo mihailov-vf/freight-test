@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class MetricsEndpointTest extends TestCase
 {
-    const URI = '/api/metrics';
+    public const URI = '/api/metrics';
 
     #[Test]
     public function returns_all_metrics()
