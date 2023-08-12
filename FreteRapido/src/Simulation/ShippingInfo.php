@@ -23,7 +23,10 @@ final class ShippingInfo extends Data
     #[Required]
     public ?Shipper $shipper;
 
-    /** @param Dispatcher[] $dispatchers */
+    /**
+     * @param Dispatcher[]|DataCollection<string,Dispatcher> $dispatchers
+     * @param int[] $simulationType
+     */
     public function __construct(
         public readonly Recipient $recipient,
         #[Filled]

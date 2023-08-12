@@ -15,6 +15,7 @@ use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 #[MapName(SnakeCaseMapper::class)]
 final class Volume extends Data
 {
+    /** @param mixed[]|null $items */
     public function __construct(
         /** Quantidade do mesmo volume/item */
         #[Numeric]

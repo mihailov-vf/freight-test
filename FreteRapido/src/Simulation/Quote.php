@@ -14,8 +14,8 @@ use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 class Quote extends Data
 {
     /**
-     * @param Offer[]|DataCollection|null $offers Ofertas de cotações para o ponto de expedição informado
-     * @param Volume[]|DataCollection|null $volumes Volumes/itens do ponto de expedição utilizados na cotação
+     * @param Offer[]|DataCollection<string,Offer>|null $offers Ofertas de cotações para o ponto de expedição informado
+     * @param Volume[]|DataCollection<string,Volume>|null $volumes Volumes/itens do ponto de expedição utilizados na cotação
      * @param string[]|null $appliedRules Regras de fretes aplicadas
      */
     public function __construct(

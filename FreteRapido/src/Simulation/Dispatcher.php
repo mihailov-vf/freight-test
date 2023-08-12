@@ -19,6 +19,9 @@ use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 #[MapName(SnakeCaseMapper::class)]
 final class Dispatcher extends Data
 {
+    /**
+     * @param Volume[]|DataCollection<string,Volume> $volumes
+     */
     public function __construct(
         /** CNPJ do expedidor, caso não tenha expedidor informar o mesmo CNPJ utilizado em shipper */
         #[Rule('cnpj')]
@@ -37,8 +40,6 @@ final class Dispatcher extends Data
 
         /**
          * Dados dos volumes do ponto de expedição
-         *
-         * @var Volume[]
          */
         #[Filled]
         #[DataCollectionOf(Volume::class)]

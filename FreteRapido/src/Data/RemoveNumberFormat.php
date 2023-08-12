@@ -14,6 +14,7 @@ class RemoveNumberFormat implements Cast
     {
     }
 
+    /** @phpstan-ignore-next-line */
     public function cast(DataProperty $property, mixed $value, array $context): string|int
     {
         if (!is_string($value) && !$value instanceof Stringable) {
@@ -21,7 +22,7 @@ class RemoveNumberFormat implements Cast
             throw new \InvalidArgumentException("Expected value of type 'string' to cast found {$foundType}.");
         }
 
-        $value = preg_replace('/\D/', '', (string)$value);
+        $value = preg_replace('/\D/', '', (string)$value) ?? throw new \RuntimeException("Unexpected PCRE Error with string ({$value}).");
         return $this->forceType ? intval($value) : $value;
     }
 }

@@ -1,0 +1,15 @@
+includes:
+    - ./vendor/nunomaduro/larastan/extension.neon
+
+parameters:
+
+    paths:
+        - app/
+        - FreteRapido
+
+    excludePaths:
+        - tests
+        - FreteRapido/tests
+
+    # Level 9 is the highest level
+    level: 8

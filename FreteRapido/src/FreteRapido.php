@@ -6,10 +6,10 @@ namespace FreteRapido;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Response;
 use FreteRapido\Simulation\Shipper;
 use FreteRapido\Simulation\Simulation;
 use FreteRapido\Simulation\ShippingInfo;
+use Psr\Http\Message\ResponseInterface;
 use Stringable;
 
 enum FreteRapidoApiVersion: string
@@ -45,10 +45,11 @@ class FreteRapido
         string|Stringable $body = null
     ): Request {
         $uri = "{$apiVersion->value}/$endpoint";
+        /** @phpstan-ignore-next-line */
         return new Request($method, $uri, body: $body);
     }
 
-    private function checkResponse(Response $response): ?ServiceError
+    private function checkResponse(ResponseInterface $response): ?ServiceError
     {
         $statusCode = $response->getStatusCode();
         if ($statusCode < 400) {

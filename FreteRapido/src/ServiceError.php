@@ -19,6 +19,7 @@ final class ServiceError extends Data
     private function extractErrorMessage(): void
     {
         $data = json_decode($this->responseBody, true);
+        /** @phpstan-ignore-next-line */
         $this->message = $data['error'];
     }
 }
