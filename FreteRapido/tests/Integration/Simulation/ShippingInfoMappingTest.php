@@ -4,11 +4,24 @@ declare(strict_types=1);
 
 namespace FreteRapido\Tests\Unit\Simulation;
 
-use FreteRapido\Simulation\Shipper;
-use FreteRapido\Simulation\ShippingInfo;
+use FreteRapido\Data;
+use FreteRapido\Simulation\{
+    DesiredReturn,
+    Dispatcher,
+    Recipient,
+    Shipper,
+    ShippingInfo
+};
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
+#[CoversClass(Data::class)]
+#[CoversClass(DesiredReturn::class)]
+#[CoversClass(Dispatcher::class)]
+#[CoversClass(Recipient::class)]
+#[CoversClass(Shipper::class)]
+#[CoversClass(ShippingInfo::class)]
 class ShippingInfoMappingTest extends TestCase
 {
     #[Test]
@@ -20,52 +33,7 @@ class ShippingInfoMappingTest extends TestCase
         $cep = fake()->postcode();
 
         $recipientCep = fake()->postcode();
-        $json = <<<JSON
-{
-  "recipient": {
-    "type": 0,
-    "zipcode": "{$recipientCep}"
-  },
-  "dispatchers": [
-    {
-      "registered_number": "{$cnpj}",
-      "zipcode": "{$cep}",
-      "total_price": 0.0,
-      "volumes": [
-        {
-          "amount": 0,
-          "amount_volumes": 0,
-          "category": 1,
-          "sku": "",
-          "tag": "",
-          "description": "",
-          "height": 0.0,
-          "width": 0.0,
-          "length": 0.0,
-          "unitary_price": 0.0,
-          "unitary_weight": 0.0,
-          "consolidate": false,
-          "overlaid": false,
-          "rotate": false
-        }
-      ]
-    }
-  ],
-  "channel": "",
-  "filter": 1,
-  "limit": 0,
-  "identification": "",
-  "reverse": false,
-  "simulation_type": [
-    0
-  ],
-  "returns": {
-    "composition": false,
-    "volumes": false,
-    "applied_rules": false
-  }
-}
-JSON;
+        $json = require __DIR__ . '/../../data/shipping_info.php';
 
         try {
             $shippingInfo = ShippingInfo::from(

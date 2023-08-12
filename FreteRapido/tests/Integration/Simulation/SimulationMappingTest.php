@@ -5,11 +5,29 @@ declare(strict_types=1);
 namespace FreteRapido\Tests\Integration\Simulation;
 
 use DateTimeImmutable;
-use FreteRapido\Simulation\Simulation;
+use FreteRapido\Data;
+use FreteRapido\Simulation\{
+    Simulation,
+    Quote,
+    Offer,
+    Volume,
+    Carrier,
+    DeliveryTime,
+    Weights
+};
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use SplFileObject;
 use Tests\TestCase;
 
+#[CoversClass(Carrier::class)]
+#[CoversClass(Data::class)]
+#[CoversClass(DeliveryTime::class)]
+#[CoversClass(Offer::class)]
+#[CoversClass(Quote::class)]
+#[CoversClass(Simulation::class)]
+#[CoversClass(Volume::class)]
+#[CoversClass(Weights::class)]
 class SimulationMappingTest extends TestCase
 {
     #[Test]
@@ -71,9 +89,12 @@ class SimulationMappingTest extends TestCase
         $offers = $simulation->dispatchers[0]->offers;
         $this->assertNotEmpty($offers);
         foreach ($offers as $n => $offer) {
-            // The default Datetime caster can't deal with this format
-            $expectedDate = new DateTimeImmutable($jsonData['dispatchers'][0]['offers'][$n]['expiration']);
-            $this->assertEquals($expectedDate, $offers[$n]->expiration);
+            // The default Datetime caster can't deal with the input format
+            // This data goes down to the nanoseconds.
+            $expectedDate = $jsonData['dispatchers'][0]['offers'][$n]['expiration'];
+            // Checking precision to the microseconds
+            // I could not find ways to increase the accuracy of the date formatter.
+            $this->assertStringContainsString($offers[$n]->expiration->format('Y-m-d\TH:i:s.u'), $expectedDate);
         }
     }
 }

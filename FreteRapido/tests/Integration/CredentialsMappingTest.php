@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace FreteRapido\Tests\Integration;
 
 use FreteRapido\Credentials;
+use FreteRapido\Data;
 use Illuminate\Validation\ValidationException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
+#[CoversClass(Credentials::class)]
+#[CoversClass(Data::class)]
 class CredentialsMappingTest extends TestCase
 {
     #[Test]

@@ -1,0 +1,1 @@
+{"details":[],"error":"json: cannot unmarshal string into Go struct field SimulationRecipient.recipient.zipcode of type uint32"}
