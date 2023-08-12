@@ -25,7 +25,7 @@ class FreteRapido
     ) {
     }
 
-    public function simulate(ShippingInfo $shipping): Simulation
+    public function simulate(ShippingInfo $shipping): Simulation|ServiceError
     {
         $shipping->shipper = Shipper::from([
             'registered_number' => $this->credentials->cnpj,
@@ -34,9 +34,8 @@ class FreteRapido
         ]);
         $request = $this->request(FreteRapidoApiVersion::V3, 'POST', 'quote/simulate', $shipping);
         $response = $this->httpClient->sendRequest($request);
-        $this->checkResponse($response);
 
-        return Simulation::from($response->getBody()->getContents());
+        return $this->checkResponse($response) ?? Simulation::from($response->getBody()->getContents());
     }
 
     private function request(
@@ -49,11 +48,13 @@ class FreteRapido
         return new Request($method, $uri, body: $body);
     }
 
-    private function checkResponse(Response $response): void
+    private function checkResponse(Response $response): ?ServiceError
     {
         $statusCode = $response->getStatusCode();
         if ($statusCode < 400) {
-            return;
+            return null;
         }
+
+        return new ServiceError($statusCode, $response->getReasonPhrase(), $response->getBody()->getContents());
     }
 }

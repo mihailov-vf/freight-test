@@ -7,7 +7,8 @@ namespace FreteRapido\Tests\Unit;
 use FreteRapido\{
     Credentials,
     FreteRapido,
-    FreteRapidoApiVersion
+    FreteRapidoApiVersion,
+    ServiceError
 };
 use FreteRapido\Simulation\{
     Shipper,
@@ -17,8 +18,11 @@ use FreteRapido\Simulation\{
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\{
+    CoversClass,
+    Test,
+    TestWith
+};
 use PHPUnit\Framework\MockObject\MockObject;
 use SplFileObject;
 use Tests\TestCase;
@@ -86,5 +90,30 @@ class FreteRapidoTest extends TestCase
         // Asserts that shipper info was filled
         $this->assertInstanceOf(Shipper::class, $this->validShipping->shipper);
         $this->assertInstanceOf(Simulation::class, $simulation);
+    }
+
+    #[Test]
+    #[TestWith([500, 'simulation_endpoint_not_found_response'])]
+    #[TestWith([400, 'simulation_invalid_credentials_response'])]
+    #[TestWith([400, 'simulation_invalid_data_response'])]
+    public function authentication_error_response(int $statusCode, string $responseFilename)
+    {
+        $jsonFile = new SplFileObject(dirname(__DIR__) . "/data/{$responseFilename}.json");
+        $responseBody = $jsonFile->fread($jsonFile->getSize());
+        $errorData = json_decode($responseBody, true);
+
+        $expectedResponse = new Response($statusCode, body: $responseBody);
+        $this->httpClient->expects($this->once())
+            ->method('sendRequest')
+            ->willReturn($expectedResponse);
+
+        /** @var ServiceError */
+        $serviceError = $this->freteRapido->simulate($this->validShipping);
+
+        $this->assertInstanceOf(ServiceError::class, $serviceError);
+        $this->assertEquals($expectedResponse->getStatusCode(), $serviceError->code);
+        $this->assertEquals($expectedResponse->getReasonPhrase(), $serviceError->reason);
+        $this->assertEquals($errorData['error'], $serviceError->message);
+        $this->assertEquals($responseBody, $serviceError->responseBody);
     }
 }
