@@ -21,8 +21,8 @@ final class Dispatcher extends Data
 {
     public function __construct(
         /** CNPJ do expedidor, caso não tenha expedidor informar o mesmo CNPJ utilizado em shipper */
-        #[Numeric]
         #[Rule('cnpj')]
+        #[WithCast(RemoveNumberFormat::class, forceType: false)]
         public readonly string $registeredNumber,
 
         /** CEP de origem do expedidor */

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace FreteRapido\Simulation;
 
 use DateTimeImmutable;
+use FreteRapido\Data\DateTimeConstructorParse;
 use Spatie\LaravelData\Attributes\MapName;
+use Spatie\LaravelData\Attributes\WithCast;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 
@@ -17,7 +19,7 @@ class Offer extends Data
         public readonly int $offer,
 
         /** Tipo da simulação */
-        public readonly int $simulationType,
+        public readonly ?int $simulationType,
 
         /** Metadados da transportadora */
         public readonly Carrier $carrier,
@@ -39,6 +41,7 @@ class Offer extends Data
         public readonly ?string $identifier,
 
         /** Prazo de expiração da tabela calculada */
+        #[WithCast(DateTimeConstructorParse::class)]
         public readonly DateTimeImmutable $expiration,
 
         /** Preço de custo da cotação */
