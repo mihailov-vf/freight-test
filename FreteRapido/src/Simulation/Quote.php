@@ -33,13 +33,10 @@ class Quote extends Data
 
         /** CEP do ponto de expedição (origem) */
         public readonly string $zipcodeOrigin,
-
         #[DataCollectionOf(Offer::class)]
         public readonly ?DataCollection $offers,
-
         #[DataCollectionOf(Volume::class)]
         public readonly ?DataCollection $volumes,
-
         public readonly ?array $appliedRules,
     ) {
     }

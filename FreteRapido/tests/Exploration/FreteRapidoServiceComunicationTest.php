@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace FreteRapido\Tests\Exploration;
 
-use DateTime;
 use FreteRapido\Simulation\ShippingInfo;
 use FreteRapido\Simulation\Simulation;
 use Illuminate\Support\Facades\Http;
