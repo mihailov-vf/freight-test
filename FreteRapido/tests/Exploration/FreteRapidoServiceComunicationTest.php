@@ -9,6 +9,7 @@ use FreteRapido\Simulation\ShippingInfo;
 use FreteRapido\Simulation\Simulation;
 use Illuminate\Support\Facades\Http;
 use PHPUnit\Framework\Attributes\Test;
+use SplFileObject;
 use Tests\TestCase;
 
 class FreteRapidoServiceComunicationTest extends TestCase
@@ -29,7 +30,12 @@ class FreteRapidoServiceComunicationTest extends TestCase
 
         $this->assertTrue($response->successful());
         try {
-            echo $response->body();
+            $body = $response->body();
+            echo $body;
+
+            $jsonFile = new SplFileObject(__DIR__ . '/../data/simulation_real_response.json', 'w');
+            $jsonFile->fwrite($body);
+
             $simulation = Simulation::from($response->json());
         } catch (\Illuminate\Validation\ValidationException $th) {
             var_dump($th->errors());

@@ -55,31 +55,25 @@ class SimulationMappingTest extends TestCase
     #[Test]
     public function creating_from_real_json()
     {
-        $json = new SplFileObject(__DIR__ . '/simulation_real_return.json');
-        // The default Datetime caster can't deal with this format
-        $offersExpirationsDate = array_map(
-            static fn ($value) => new DateTimeImmutable($value),
-            [
-                "2023-09-11T03:43:53.512185969Z",
-                "2023-09-11T03:43:53.512200062Z",
-                "2023-09-11T03:43:53.512198750Z",
-                "2023-09-11T03:43:53.512177336Z",
-                "2023-09-11T03:43:53.512188481Z",
-            ]
-        );
+        $json = new SplFileObject(dirname(__DIR__) . '/../data/simulation_real_response.json');
+        $jsonString = $json->fread($json->getSize());
+        $jsonData = json_decode($jsonString, true);
 
         try {
-            $simulation = Simulation::from(
-                $json->fread($json->getSize())
-            );
+            $simulation = Simulation::from($jsonString);
         } catch (\Illuminate\Validation\ValidationException $e) {
             echo $e->validator->errors();
             $this->fail('ValidationErrors');
         }
 
         $this->assertIsObject($simulation);
-        foreach ($offersExpirationsDate as $n => $expectedDate) {
-            $this->assertEquals($expectedDate, $simulation->dispatchers[0]->offers[$n]->expiration);
+        $this->assertNotEmpty($simulation->dispatchers);
+        $offers = $simulation->dispatchers[0]->offers;
+        $this->assertNotEmpty($offers);
+        foreach ($offers as $n => $offer) {
+            // The default Datetime caster can't deal with this format
+            $expectedDate = new DateTimeImmutable($jsonData['dispatchers'][0]['offers'][$n]['expiration']);
+            $this->assertEquals($expectedDate, $offers[$n]->expiration);
         }
     }
 }
