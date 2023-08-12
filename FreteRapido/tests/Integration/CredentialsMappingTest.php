@@ -19,9 +19,9 @@ class CredentialsMappingTest extends TestCase
         $code = fake('pt_BR')->word();
         $json = <<<JSON
 {
-    "registered_number": "{$cnpj}",
-    "auth_token": "{$token}",
-    "platform_code": "{$code}"
+    "cnpj": "{$cnpj}",
+    "token": "{$token}",
+    "codigo_plataforma": "{$code}"
 }
 JSON;
         $expectedObject = new Credentials($cnpj, $token, $code);
@@ -37,16 +37,16 @@ JSON;
         $cnpj = fake('pt_BR')->cnpj(false);
         $json = <<<JSON
 {
-    "registered_number": "{$cnpj}",
-    "auth_token": ""
+    "cnpj": "{$cnpj}",
+    "token": ""
 }
 JSON;
         try {
             Credentials::from($json);
         } catch (ValidationException $e) {
             $errors = $e->errors();
-            $this->assertArrayHasKey('auth_token', $errors);
-            $this->assertArrayHasKey('platform_code', $errors);
+            $this->assertArrayHasKey('token', $errors);
+            $this->assertArrayHasKey('codigo_plataforma', $errors);
         }
     }
 }

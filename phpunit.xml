@@ -2,6 +2,7 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
     bootstrap="vendor/autoload.php"
+    defaultTestSuite="Unit,Integration"
     colors="true"
 >
     <coverage pathCoverage="true">
@@ -12,12 +13,16 @@
     <testsuites>
         <testsuite name="Unit">
             <directory>tests/Unit</directory>
+            <directory>FreteRapido/tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Integration">
+            <directory>FreteRapido/tests/Integration</directory>
         </testsuite>
         <testsuite name="Feature">
             <directory>tests/Feature</directory>
         </testsuite>
-        <testsuite name="FreteRapido">
-            <directory>FreteRapido/tests</directory>
+        <testsuite name="Exploration">
+            <directory>FreteRapido/tests/Exploration</directory>
         </testsuite>
     </testsuites>
     <source>

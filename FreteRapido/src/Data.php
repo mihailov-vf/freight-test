@@ -11,8 +11,9 @@ use Spatie\LaravelData\DataPipes\CastPropertiesDataPipe;
 use Spatie\LaravelData\DataPipes\DefaultValuesDataPipe;
 use Spatie\LaravelData\DataPipes\MapPropertiesDataPipe;
 use Spatie\LaravelData\DataPipes\ValidatePropertiesDataPipe;
+use Stringable;
 
-class Data extends LaravelData
+class Data extends LaravelData implements Stringable
 {
     public static function pipeline(): DataPipeline
     {
@@ -23,5 +24,10 @@ class Data extends LaravelData
             ->through(ValidatePropertiesDataPipe::allTypes())
             ->through(DefaultValuesDataPipe::class)
             ->through(CastPropertiesDataPipe::class);
+    }
+
+    public function __toString(): string
+    {
+        return $this->toJson(JSON_THROW_ON_ERROR);
     }
 }
