@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace FreteRapido\Tests\Integration\Simulation;
 
-use DateTimeImmutable;
 use FreteRapido\Data;
 use FreteRapido\Simulation\{
     Simulation,
