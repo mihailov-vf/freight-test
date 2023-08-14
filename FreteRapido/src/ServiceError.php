@@ -6,20 +6,13 @@ namespace FreteRapido;
 
 final class ServiceError extends Data
 {
-    public readonly string $message;
 
     public function __construct(
-        public readonly int $code,
+        public readonly int $serviceCode,
         public readonly string $reason,
         public readonly string $responseBody,
+        public readonly int $suggestedCode,
+        public readonly string $message,
     ) {
-        $this->extractErrorMessage();
-    }
-
-    private function extractErrorMessage(): void
-    {
-        $data = json_decode($this->responseBody, true);
-        /** @phpstan-ignore-next-line */
-        $this->message = $data['error'];
     }
 }

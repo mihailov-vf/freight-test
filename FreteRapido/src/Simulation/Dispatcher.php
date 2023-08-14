@@ -12,6 +12,7 @@ use Spatie\LaravelData\Attributes\Validation\Filled;
 use Spatie\LaravelData\Attributes\Validation\Nullable;
 use Spatie\LaravelData\Attributes\Validation\Numeric;
 use Spatie\LaravelData\Attributes\Validation\Rule;
+use Spatie\LaravelData\Attributes\Validation\Regex;
 use Spatie\LaravelData\Attributes\WithCast;
 use Spatie\LaravelData\DataCollection;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
@@ -29,7 +30,7 @@ final class Dispatcher extends Data
         public readonly string $registeredNumber,
 
         /** CEP de origem do expedidor */
-        #[Rule('formato_cep')]
+        #[Regex('/\d{5}-?\d{3}/')]
         #[WithCast(RemoveNumberFormat::class)]
         public readonly int $zipcode,
 

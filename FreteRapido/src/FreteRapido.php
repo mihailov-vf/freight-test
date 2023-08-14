@@ -51,11 +51,25 @@ class FreteRapido
 
     private function checkResponse(ResponseInterface $response): ?ServiceError
     {
-        $statusCode = $response->getStatusCode();
-        if ($statusCode < 400) {
+        $serviceStatusCode = $response->getStatusCode();
+        if ($serviceStatusCode < 400) {
             return null;
         }
 
-        return new ServiceError($statusCode, $response->getReasonPhrase(), $response->getBody()->getContents());
+        $suggestedStatusCode = $serviceStatusCode;
+        $message = 'Houve um erro ao enviar a requisição ao serviço externo. Por favor, verifique os dados enviados e tente novamente.';
+
+        // TODO: investigar e descrever novos tipos de erros
+        if ($serviceStatusCode >= 500) {
+            $message = 'Houve um erro com o serviço externo. Por favor, após alguns instantes tente novamente.';
+        }
+
+        return new ServiceError(
+            $serviceStatusCode,
+            $response->getReasonPhrase(),
+            $response->getBody()->getContents(),
+            $suggestedStatusCode,
+            $message,
+        );
     }
 }

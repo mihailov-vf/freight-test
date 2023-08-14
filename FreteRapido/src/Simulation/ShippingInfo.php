@@ -9,12 +9,24 @@ use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\LaravelData\Attributes\MapName;
 use Spatie\LaravelData\Attributes\Validation\BooleanType;
 use Spatie\LaravelData\Attributes\Validation\Filled;
-use Spatie\LaravelData\Attributes\Validation\In;
 use Spatie\LaravelData\Attributes\Validation\Numeric;
 use Spatie\LaravelData\Attributes\Validation\Required;
 use Spatie\LaravelData\Attributes\Validation\Sometimes;
 use Spatie\LaravelData\DataCollection;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
+
+enum SimulationFilter: int
+{
+    case SomentMenorPreco = 1;
+    case SomentMenorPrazo = 2;
+    case SomentMenorPrecoPrazo = 3;
+}
+
+enum SimulationType: int
+{
+    case Fracionada = 0;
+    case Lotacao = 1;
+}
 
 #[MapName(SnakeCaseMapper::class)]
 final class ShippingInfo extends Data
@@ -45,8 +57,7 @@ final class ShippingInfo extends Data
          */
         #[Sometimes]
         #[Numeric]
-        #[In([1, 2, 3])]
-        public readonly ?int $filter,
+        public readonly ?SimulationFilter $filter,
 
         /** Limite de resultados */
         #[Sometimes]
@@ -65,6 +76,7 @@ final class ShippingInfo extends Data
          * 0 = Fracionada
          * 1 = Lotação
          */
+        #[Filled]
         public readonly array $simulationType,
         #[Sometimes]
         public readonly ?DesiredReturn $returns,

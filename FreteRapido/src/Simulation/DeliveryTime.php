@@ -18,13 +18,13 @@ class DeliveryTime extends Data
 {
     public function __construct(
         /** Tempo de entrega em dias */
-        public readonly ?int $days,
+        public readonly ?int $days = null,
 
         /** Tempo de entrega em horas */
-        public readonly ?int $hours,
+        public readonly ?int $hours = null,
 
         /** Tempo de entrega em minutos */
-        public readonly ?int $minutes,
+        public readonly ?int $minutes = null,
 
         /**
          * Data prevista de entrega pela transportadora, desconsiderando finais de semana, feriados nacionais do BRA e
