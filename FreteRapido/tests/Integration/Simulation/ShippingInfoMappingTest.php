@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FreteRapido\Tests\Unit\Simulation;
+namespace FreteRapido\Tests\Integration\Simulation;
 
 use FreteRapido\Data;
 use FreteRapido\Simulation\{

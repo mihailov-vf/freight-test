@@ -23,12 +23,16 @@ O projeto deve garantir que os dados sejam validados previamente ao envio para o
 ### API
 
 - [POST] localhost:80/api/quote
-> Permite que seja feita uma cotação de fretes seguindo o seguinte formato de consulta:
-```
-{
+> Permite que seja feita uma cotação de fretes seguindo o seguinte formato de mensagem:
+```bash
+curl --request POST \
+  --url http://localhost/api/quote \
+  --header 'Accept:  application/json' \
+  --header 'content-type:  application/json' \
+  --data '{
    "recipient":{
       "address":{
-         "zipcode":"01311000"
+         "zipcode":"01311-000"
       }
    },
    "volumes":[
@@ -36,7 +40,7 @@ O projeto deve garantir que os dados sejam validados previamente ao envio para o
          "category":7,
          "amount":1,
          "unitary_weight":5,
-         "price":349,
+         "price":5,
          "sku":"abc-teste-123",
          "height":0.2,
          "width":0.2,
@@ -54,12 +58,13 @@ O projeto deve garantir que os dados sejam validados previamente ao envio para o
       }
    ]
 }
+'
 ```
 
  O retorno esperado atenderá os seguintes formatos
 
  > Em caso de sucesso:
-```
+```json
 HTTP: 200
 {
   "carrier":[
@@ -80,9 +85,17 @@ HTTP: 200
 ```
 
 - [GET] localhost:80/api/metrics?last_quotes={?}
+
+```bash
+curl --request GET \
+  --url http://localhost/api/metrics \
+  --header 'Accept:  application/json'
+```
+
+ O retorno esperado atenderá os seguintes formatos
  
  > Em caso de sucesso:
-```
+```json
 {
   "quotes_metrics": {
     "carriers_metrics": [
@@ -111,8 +124,9 @@ HTTP: 200
 }
 ```
 
-> Para ambos endpoints, em caso de erros ou mensagens de validação sera retornada uma mensagem como a seguinte:
-```
+Para ambos endpoints, em caso de erros ou mensagens de validação sera retornada uma mensagem como a seguinte:
+
+```json
 HTTP: 500 ou 400
 {
     "message": "Mensagem de erro",
@@ -130,7 +144,24 @@ cd freight-test
 
 Ajuste as variáveis de ambiente do projeto, copiando o arquivo `.env.example` e adicionando os dados de acesso na API FreteRápido:
 ```bash
-cp 
+cp .env.example .env
+```
+
+```shell
+CREDENCIAIS_CNPJ="<INSERIR_DADOS>"
+CREDENCIAIS_TOKEN="<INSERIR_DADOS>"
+CREDENCIAIS_CODIGO_PLATAFORMA="<INSERIR_DADOS>"
+ENVIO_CEP="<INSERIR_DADOS>" # CEP do remetente
+```
+
+Execute o comando para instalação do projeto:
+```bash
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    laravelsail/php82-composer:latest \
+    composer install --ignore-platform-reqs
 ```
 
 Certifique-se de que o docker está instalado em seu computador e execute:

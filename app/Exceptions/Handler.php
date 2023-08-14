@@ -7,6 +7,7 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
 use PDOException;
 use RuntimeException;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -36,6 +37,14 @@ class Handler extends ExceptionHandler
                 return response()->json([
                     'message' => $e->getMessage()
                 ], 500);
+            }
+        });
+
+        $this->renderable(function (HttpExceptionInterface $e, Request $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'message' => $e->getMessage()
+                ], $e->getStatusCode());
             }
         });
 

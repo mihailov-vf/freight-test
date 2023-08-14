@@ -21,3 +21,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/quote', QuoteController::class);
 Route::get('/metrics', MetricsController::class);
+
+Route::fallback(function () {
+    abort(404, 'API resource not found');
+});
