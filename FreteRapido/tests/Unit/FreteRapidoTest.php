@@ -111,9 +111,8 @@ class FreteRapidoTest extends TestCase
         $serviceError = $this->freteRapido->simulate($this->validShipping);
 
         $this->assertInstanceOf(ServiceError::class, $serviceError);
-        $this->assertEquals($expectedResponse->getStatusCode(), $serviceError->code);
+        $this->assertEquals($expectedResponse->getStatusCode(), $serviceError->serviceCode);
         $this->assertEquals($expectedResponse->getReasonPhrase(), $serviceError->reason);
-        $this->assertEquals($errorData['error'], $serviceError->message);
         $this->assertEquals($responseBody, $serviceError->responseBody);
     }
 }

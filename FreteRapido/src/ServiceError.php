@@ -6,7 +6,6 @@ namespace FreteRapido;
 
 final class ServiceError extends Data
 {
-
     public function __construct(
         public readonly int $serviceCode,
         public readonly string $reason,
