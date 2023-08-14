@@ -2,7 +2,11 @@
 
 namespace App\Exceptions;
 
+use Error;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
+use PDOException;
+use RuntimeException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -25,6 +29,22 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             //
+        });
+
+        $this->renderable(function (InternalServerException $e, Request $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'message' => $e->getMessage()
+                ], 500);
+            }
+        });
+
+        $this->renderable(function (PDOException|RuntimeException|Error $e, Request $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'message' => 'Houve um erro interno no processamento'
+                ], 500);
+            }
         });
     }
 }
