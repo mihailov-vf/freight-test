@@ -165,10 +165,4 @@ class QuoteEndpointTest extends TestCase
         $response->assertJsonStructure(['message']);
         $response->assertJsonPath('message', $expectedMessage);
     }
-
-    #[Test]
-    public function requires_token_authentication()
-    {
-        $this->markTestIncomplete();
-    }
 }
