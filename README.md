@@ -22,7 +22,7 @@ O projeto deve garantir que os dados sejam validados previamente ao envio para o
 
 ### API
 
-- [POST] /api/quote
+- [POST] localhost:80/api/quote
 > Permite que seja feita uma cotação de fretes seguindo o seguinte formato de consulta:
 ```
 {
@@ -79,12 +79,79 @@ HTTP: 200
 }
 ```
 
-> Em caso de erros ou mensagens de validação:
+- [GET] localhost:80/api/metrics?last_quotes={?}
+ 
+ > Em caso de sucesso:
+```
+{
+  "quotes_metrics": {
+    "carriers_metrics": [
+      {
+        "name": "BTU BRASPRESS",
+        "offers_quantity": 3,
+        "total_price": 296.05,
+        "average_price": 98.68
+      },
+      {
+        "name": "CORREIOS",
+        "offers_quantity": 4,
+        "total_price": 310.12,
+        "average_price": 77.53
+      },
+      {
+        "name": "UBER",
+        "offers_quantity": 4,
+        "total_price": 240.96,
+        "average_price": 60.24
+      }
+    ],
+    "lower_price": 55.74,
+    "higher_price": 103.35
+  }
+}
+```
+
+> Para ambos endpoints, em caso de erros ou mensagens de validação sera retornada uma mensagem como a seguinte:
 ```
 HTTP: 500 ou 400
 {
     "message": "Mensagem de erro",
+    "errors": [<somente em caso de erros de validação>]
 }
 ```
 
-- [GET] /api/metrics?last_quotes={?}
+## instalação e Utilização
+
+Para executar localmente este projeto clone este repositório:
+```bash
+git clone https://github.com/mihailov-vf/freight-test
+cd freight-test
+```
+
+Ajuste as variáveis de ambiente do projeto, copiando o arquivo `.env.example` e adicionando os dados de acesso na API FreteRápido:
+```bash
+cp 
+```
+
+Certifique-se de que o docker está instalado em seu computador e execute:
+```bash
+docker-compose up -d
+```
+
+Antes de iniciar a utilização, garanta que o banco de dados esteja com os dados iniciais necessários:
+```bash
+docker-compose exec quotes php artisan migrate --seed
+```
+
+Para acessar o container e realizar outras operações pode-se executar:
+```bash
+docker-compose exec quotes bash
+```
+
+### Testes Automatizados
+Para executar os testes, acesse o conteirner através de um terminal e execute:
+```bash
+composer tests # para os principais testes (Mais rápido)
+# e
+composer tests:complete # para incluir os testes de integração e aceitação (Mais lento)
+```

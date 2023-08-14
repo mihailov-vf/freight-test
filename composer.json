@@ -39,6 +39,8 @@
         }
     },
     "scripts": {
+        "tests": "php artisan test",
+        "tests:complete": "php artisan test --testsuite Unit,Integration,Feature",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
