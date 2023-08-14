@@ -17,6 +17,12 @@ use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 class DeliveryTime extends Data
 {
     public function __construct(
+        /**
+         * Data prevista de entrega pela transportadora, desconsiderando finais de semana, feriados nacionais do BRA e
+         * feriados calculados com a Páscoa.
+         */
+        public readonly DateTimeImmutable $estimatedDate,
+
         /** Tempo de entrega em dias */
         public readonly ?int $days = null,
 
@@ -25,12 +31,6 @@ class DeliveryTime extends Data
 
         /** Tempo de entrega em minutos */
         public readonly ?int $minutes = null,
-
-        /**
-         * Data prevista de entrega pela transportadora, desconsiderando finais de semana, feriados nacionais do BRA e
-         * feriados calculados com a Páscoa.
-         */
-        public readonly DateTimeImmutable $estimatedDate,
     ) {
     }
 }
