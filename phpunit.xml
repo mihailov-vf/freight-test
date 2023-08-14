@@ -16,6 +16,7 @@
             <directory>FreteRapido/tests/Unit</directory>
         </testsuite>
         <testsuite name="Integration">
+            <directory>tests/Integration</directory>
             <directory>FreteRapido/tests/Integration</directory>
         </testsuite>
         <testsuite name="Feature">
